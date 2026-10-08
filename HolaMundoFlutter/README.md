@@ -13,9 +13,9 @@ The app and some identifiers are in Spanish: **¡Hola, Mundo!** = Hello, World; 
 
 | Android (HolaMundo_Phone emulator) | iOS (simulator) | Real iPhone |
 |:---:|:---:|:---:|
-| <img src="docs/capturas/android-hola-mundo.png" width="240" alt="The Flutter app running on Android"> | Captura pendiente (Mac) | Captura pendiente (Mac) |
+| <img src="docs/capturas/android-hola-mundo.png" width="240" alt="The Flutter app running on Android"> | <img src="docs/capturas/ios-hola-mundo.png" width="240" alt="iOS greeting and initial counter on iPhone 17 Pro"> | Captura pendiente (iPhone físico) |
 
-Both platforms use `lib/main.dart`; the greeting consults `nombrePlataforma()`. **Android is verified; iOS still needs a Mac run.** Generic iPhone settings images later in the tutorial do not prove this app has run on iOS.
+Both platforms use `lib/main.dart`; the greeting consults `nombrePlataforma()`. **Android is verified on Windows; iOS is verified on the iPhone 17 Pro simulator (iOS 26.5), on 2026-10-08. Physical iPhone testing remains pending.** Generic iPhone settings images later in the tutorial do not prove this app has run on iOS.
 
 **Starting on a Mac without VS Code or Flutter?** Follow [the Mac setup guide](INICIO-MAC.md) (Spanish); this app lives inside the `Flutter-Projects` repository.
 
@@ -826,7 +826,7 @@ These three tests cover logic and widgets. They do not demonstrate iOS signing, 
 
 # Part 2 — iOS (Mac only)
 
-**This part was written without access to a Mac; the steps follow the Flutter 3.47.6 template but have not yet been run on iOS.** The iPhone settings screenshots are generic copies from HolaMundoKMP; they do not show this app running. App and Xcode screenshots are marked **Captura pendiente (Mac)** (Screenshot pending on Mac).
+**Verified on the simulator on 2026-10-08 with Flutter 3.47.6 stable and the existing Xcode 26.6 tools.** The three iOS screenshots in 2.3 show this Flutter app. Generic iPhone settings screenshots copied from HolaMundoKMP do not prove execution on a physical phone. After updating to Xcode 27.0, execution from its interface was also verified and both Xcode screenshots were captured. Physical iPhone testing remains pending.
 
 On Windows, you can edit shared Dart and run Android. Building and signing iOS requires macOS with Xcode. Do not apply the KMP tutorial's Gradle phases or Shared framework to Flutter: Flutter's host already includes its own integration.
 
@@ -852,6 +852,30 @@ flutter doctor
 Read and accept Xcode's license if requested. `flutter doctor` should recognize Flutter and Xcode. Install a missing iOS runtime through Xcode before opening the simulator. Follow the [official iOS setup guide](https://docs.flutter.dev/platform-integration/ios/setup) for your version's details.
 
 Clone the repo as described at the start, enter `HolaMundoFlutter` and run `flutter pub get`. **CocoaPods is involved only if native plugins or their integration need it**; `cupertino_icons` is a font, not a plugin. Recent templates can also use Swift Package Manager. Do not create a Podfile or add dependencies blindly. If a plugin requires CocoaPods, follow its guide and the [CocoaPods installation instructions](https://guides.cocoapods.org/using/getting-started.html).
+
+### Actual Mac verification — 2026-10-08
+
+The clean GitHub Desktop clone at `~/Documents/GitHub/Flutter-Projects/HolaMundoFlutter`, revision `15a8568`, was reused; it matches the published repository. No applicable `AGENTS.md` files were found. No duplicate clone was created and no changes were overwritten.
+
+| Component | Observed result |
+|---|---|
+| Mac | Apple M1 Pro, arm64, 32 GB; macOS 27.0.1, build 26A434. |
+| Git | Existing 2.50.1 (Apple Git-155). |
+| Xcode and tools | 26.6, build 17F113 for the initial check; **currently 27.0, build 27A266a**; selected `/Applications/Xcode.app/Contents/Developer`; first launch complete. `clang` available; iOS 26.5 Simulator SDK for the initial check and 27.0 after the update. No separate Command Line Tools receipt; Xcode's included tools are used. |
+| Existing runtimes | iOS 18.2 and iOS 26.5; only iOS 26.5 was tested. |
+| Installed VS Code | 1.141.0 arm64, official Microsoft download; SHA-256 and signature verified. |
+| Installed extensions | Dart Code Flutter and Dart, both 3.144.0. |
+| Installed Flutter | 3.47.6 stable, revision `5fc346839b`; Dart 3.13.5; `~/dev/flutter`. |
+| Configuration | Flutter and `code` PATH entries in `~/.zprofile`, without duplicates; `dart.flutterSdkPath` in VS Code user settings. This project folder is enabled and iPhone 17 Pro selected in the editor. |
+| Existing Android tools | Android Studio 2026.2, doctor-reported SDK 36.0.0 and JDK 25.0.3. These were not reinstalled; Android was not tested on this Mac. |
+
+The Flutter arm64 ZIP and release index returned HTTP 404. **The requested version was retained** by installing tag `3.47.6` from the [official Flutter repository](https://github.com/flutter/flutter/tree/3.47.6), on a local `stable` branch pinned to that revision; Flutter downloaded arm64 Dart. No replacement version was chosen and `flutter upgrade` was not run.
+
+`flutter doctor -v` finished with issues in **2 categories**: missing CocoaPods and missing Chrome. Flutter, Android toolchain, devices and network passed. The app uses Swift Package Manager and has no native plugins; the iOS build succeeded **without installing CocoaPods**. Chrome was not installed because Web was not tested. Doctor also reported discovery warnings for other wireless phones; they do not block the simulator.
+
+**Verified Xcode update:** the initial check used Xcode 26.6 tools, whose interface would not open on macOS 27.0.1. The user updated Xcode to **27.0 (27A266a)** and accepted its license. Only one installation was found, `/Applications/Xcode.app`; the previous copy at that path was replaced and the iOS 18.2 and 26.5 runtimes were preserved. `xcodebuild -checkFirstLaunchStatus` passed and `flutter doctor -v` recognizes Xcode 27.0, retaining the missing CocoaPods and Chrome warnings.
+
+`ios/Runner.xcworkspace` was opened, the **Runner** scheme and **iPhone 17 Pro (iOS 26.5)** selected, and Run (⌘R) used. Xcode displayed **Running Runner on iPhone 17 Pro**, with an active process in the Debug navigator; Device Hub displayed **¡Hola desde iOS!** and the initial counter. `xcode-ejecutar.png` and `xcode-signing.png` are actual Xcode 27 windows, original 2800×1800 captures reviewed without personal information. No Team was selected and the Bundle ID was not changed. Xcode displayed 25 `Stale file … outside of the allowed root paths` warnings for generated outputs from the previous build and one settings recommendation; these did not prevent execution. Recommended settings were not applied. The automatic project format conversion (`objectVersion` 54 → 60) was reverted after closing Xcode; no native changes are included.
 
 ## 2.2 The ios/ folder: AppDelegate and scenes
 
@@ -1009,17 +1033,36 @@ flutter run
 2. In Simulator, choose an iPhone through **File → Open Simulator** if none is booted. Versions naming this app **Device Hub** should use the installed name; the [iOS guide](https://docs.flutter.dev/platform-integration/ios/setup) distinguishes `open -a Simulator` (Xcode 26 or earlier) from `open -a DeviceHub` (Xcode 27).
 3. Find its ID in `flutter devices`. With multiple targets, select the simulator in the `flutter run` menu, or use `flutter run -d SIMULATOR_ID`, replacing the ID with the real one.
 4. In VS Code, select the iPhone in the bottom bar and press F5. In Xcode, choose **Runner**, the simulator and ▶ (⌘R); to practice hot reload, use a Flutter terminal or editor session.
-5. The code should show **¡Hola desde iOS!** (Hello from iOS). Tap three times and compare the counter with Android. Check dark mode too. This outcome is **pending validation**, not recorded execution output.
+5. During the 2026-10-08 verification, the card displayed **¡Hola desde iOS!**. The initial counter displayed **Todavía no has tocado el botón**; three actual taps changed it to **Has tocado el botón 3 veces**. Switching the simulator to dark mode without restarting preserved the count of 3. Afterwards, hot restart (`R`) reset the counter to 0. App behavior was not changed and Reiniciar was not implemented.
 
-| iOS simulator | Xcode running Runner |
-|:---:|:---:|
-| Captura pendiente (Mac) | Captura pendiente (Mac) |
+The iPhone was identified using `flutter devices` and this iOS target was selected explicitly:
 
-Later save `ios-hola-mundo.png` and `xcode-ejecutar.png` in `docs/capturas/`. Do not use KMP app images as evidence for this Flutter app.
+```bash
+flutter run -d EA4C8D0F-B2B1-4330-AD6D-3B62A42F98F0
+```
+
+Actual results from `HolaMundoFlutter`:
+
+| Check | Result |
+|---|---|
+| `flutter pub get` | Successful; lock preserved. Eight packages have newer versions outside the constraints; none were upgraded. |
+| `flutter analyze` | `No issues found! (ran in 0.8s)` |
+| `flutter test` | `00:00 +3: All tests passed!` — 3/3 tests. |
+| Build and launch | `Launching lib/main.dart on iPhone 17 Pro in debug mode...`; `Xcode build done. 39.4s`; file sync and Dart VM Service active. |
+| Target | iPhone 17 Pro, iOS 26.5, arm64 simulator. Neither `macos` nor Web was selected. |
+| Hot restart | `Restarted application in 242ms.` and initial counter verified on screen. |
+
+| Fresh launch | After three taps | Dark mode, same counter |
+|:---:|:---:|:---:|
+| <img src="docs/capturas/ios-hola-mundo.png" width="240" alt="iOS greeting and initial counter"> | <img src="docs/capturas/ios-tres-toques.png" width="240" alt="iOS counter after three taps"> | <img src="docs/capturas/ios-modo-oscuro.png" width="240" alt="iOS dark mode preserving three taps"> |
+
+The three original 1206×2622 screenshots were captured with `simctl` and visually reviewed: they show only this app and the status bar, without accounts, notifications or other apps. The additional Xcode 27.0 execution is shown below; the Runner scheme and iPhone 17 Pro are visible alongside the active process. Native build warnings are detailed in 2.1.
+
+<img src="docs/capturas/xcode-ejecutar.png" width="1000" alt="Xcode 27 running Runner on iPhone 17 Pro with an active debug process">
 
 ## 2.4 Run on a real iPhone
 
-You need a Mac, Xcode supporting the phone's iOS version, a cable and an Apple ID. The project declares iOS **15.0** as its deployment target; Flutter, Xcode or plugin requirements can raise the effective minimum. No specific iOS version has been tested here.
+You need a Mac, Xcode supporting the phone's iOS version, a cable and an Apple ID. The project declares iOS **15.0** as its deployment target; Flutter, Xcode or plugin requirements can raise the effective minimum. iOS 26.5 was verified on the simulator; no physical iPhone was verified. `flutter devices` detected a wireless phone running iOS 26.7.1, but the app was not built, installed or checked on it; signing was not configured.
 
 | Step | Android | iPhone |
 |---|---|---|
@@ -1032,7 +1075,9 @@ You need a Mac, Xcode supporting the phone's iOS version, a cable and an Apple I
 
 **2. Unique Bundle ID.** Change `com.example.holaMundoFlutter` to one of your own, such as `com.yourname.myapp`. Do not use another account's Bundle ID; keep Debug, Profile and Release consistent. If changing the test target, review its identifier too. This does not change the Dart greeting code.
 
-**Signing & Capabilities:** Captura pendiente (Mac) — `xcode-signing.png`.
+**Signing & Capabilities (Xcode 27.0):** the screenshot shows the current configuration, with **Team: None** and the example identifier. The development-team warning concerns signing setup; it did not prevent simulator execution. **It does not prove physical iPhone signing or execution**, which remain pending. No accounts or personal information are visible.
+
+<img src="docs/capturas/xcode-signing.png" width="1000" alt="Runner Signing & Capabilities in Xcode 27 showing Team None">
 
 **3. Connect and trust.** Connect the iPhone, unlock it, accept **Trust This Computer?** and enter the passcode on the phone. Select your iPhone as Xcode's destination and wait if it is being prepared.
 
@@ -1297,10 +1342,10 @@ Verified on **Windows 11 on 2026-10-07 and 2026-10-08** with `flutter --version`
 | AVD | **HolaMundo_Phone**, 1080×2400 display; screenshots reduced to 540×1200. |
 | applicationId / namespace | `com.example.hola_mundo_flutter`. |
 | Runner Bundle ID | `com.example.holaMundoFlutter`, `ios/Runner.xcodeproj/project.pbxproj`. |
-| Declared iOS deployment target | **15.0** in the Xcode project; not tested on iOS. |
+| Declared iOS deployment target | **15.0** in the Xcode project; tested on iOS 26.5 simulator, not iOS 15. |
 | App version | **1.0.0+1**, `pubspec.yaml`. |
 
-**Android validation:** analysis without issues, **3/3 tests** and successful debug APK build; screenshots from this app's emulator. **iOS validation:** pending on a Mac. Xcode and iPhone versions used in the KMP repo are not claimed for Flutter.
+**Android validation:** analysis without issues, **3/3 tests** and successful debug APK build; screenshots from this app's emulator. **iOS validation (Mac, 2026-10-08):** analysis without issues, 3/3 tests, debug build and launch on iPhone 17 Pro running iOS 26.5; greeting, initial counter, three taps, dark mode retaining 3 and hot restart to 0 verified. Execution from Xcode 27.0 and Xcode screenshots obtained; environment and warnings documented in 2.1. Physical iPhone and Android on this Mac remain pending. Code, dependencies, signing and the optional exercise were not changed.
 
 ## Final structure
 
@@ -1346,6 +1391,11 @@ HolaMundoFlutter/
 │   ├── android-hola-mundo.png
 │   ├── android-tres-toques.png
 │   ├── android-modo-oscuro.png
+│   ├── ios-hola-mundo.png
+│   ├── ios-tres-toques.png
+│   ├── ios-modo-oscuro.png
+│   ├── xcode-signing.png
+│   ├── xcode-ejecutar.png
 │   ├── vscode-modo-restringido.png
 │   ├── iphone-privacidad.png
 │   ├── iphone-modo-desarrollador.png
@@ -1357,14 +1407,11 @@ HolaMundoFlutter/
 
 ## Pending screenshots
 
-Save these in `docs/capturas/` when you have a Mac. Until then, the READMEs show text rather than nonexistent images:
+`ios-hola-mundo.png`, `ios-tres-toques.png`, `ios-modo-oscuro.png`, `xcode-signing.png` and `xcode-ejecutar.png` are now available. Evidence that could not be verified remains pending:
 
-| Pending file | What to capture |
+| Pending file | Remaining work |
 |---|---|
-| `ios-hola-mundo.png` | This Flutter app freshly launched on the iPhone simulator. |
-| `iphone-hola-mundo.png` | This Flutter app on a physical iPhone, showing the iOS greeting. |
-| `xcode-signing.png` | Runner → Signing & Capabilities without visible personal information. |
-| `xcode-ejecutar.png` | Xcode running Runner on the simulator. |
-| `as-proyecto.png` (Windows) | Android Studio with the project root open and tree visible, without dialogs or personal data; width 1600 px. |
+| `iphone-hola-mundo.png` | Run this app on a physical iPhone and verify signing; wireless discovery does not prove execution. |
+| `as-proyecto.png` (Windows) | Android Studio showing the project root and tree, without dialogs or personal data; width 1600 px. Not obtained during this iOS session. |
 
-Before including any PNG, check it for accounts, emails, avatars, notifications and other-app widgets. Generic iPhone screenshots do not replace these checks. Once captured, replace **Captura pendiente (Mac)** cells with the corresponding images and update the iOS validation status.
+Android execution on this Mac and simultaneous Android+iOS execution were not verified; the prior Windows evidence is retained. macOS and Web were not tested. Before adding any new screenshot, check accounts, emails, avatars, notifications and other apps; generic settings images do not replace physical phone testing.
