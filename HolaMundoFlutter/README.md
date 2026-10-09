@@ -17,7 +17,7 @@ The app and some identifiers are in Spanish: **¡Hola, Mundo!** = Hello, World; 
 
 Both platforms use `lib/main.dart`; the greeting consults `nombrePlataforma()`. **Android is verified on Windows; iOS is verified on the iPhone 17 Pro simulator (iOS 26.5), on 2026-10-08. Physical iPhone testing remains pending.** Generic iPhone settings images later in the tutorial do not prove this app has run on iOS.
 
-**Starting on a Mac without VS Code or Flutter?** Follow [the Mac setup guide](INICIO-MAC.md) (Spanish); this app lives inside the `Flutter-Projects` repository.
+**Starting without VS Code or Flutter?** Follow [the Windows setup guide](INICIO-WINDOWS.md) or [the Mac one](INICIO-MAC.md) (both in Spanish); this app lives inside the `Flutter-Projects` repository.
 
 ---
 
@@ -661,10 +661,10 @@ If **Trust Project** appears, decide whether you trust the code before opening i
 1. In Android Studio, open **Tools → Device Manager**; on the welcome screen it may be under **More Actions → Virtual Device Manager**.
 2. Click **+ → Create Virtual Device** and choose a phone profile, such as Pixel.
 3. Choose a recent Android image. On Windows Intel/AMD use **x86_64**; on Apple Silicon Macs use **arm64-v8a**. Download the image in the wizard if it is missing.
-4. Name the AVD **HolaMundo_Phone** and click **Finish**. It already exists on this computer and stores its data in `D:\Android\avd`. Other computers do not need that same path.
+4. Name the AVD **HolaMundo_Phone** and click **Finish**.
 5. Click ▶ next to that AVD. Wait for the Android home screen before installing.
 
-This tutorial uses **HolaMundo_Phone exclusively**. Do not select `Medium_Phone` on this computer: it belongs to the user and is full. You do not need to delete other emulators to develop this app. A physical phone with USB debugging also works; accept your computer's authorization on the phone.
+This tutorial's screenshots use **HolaMundo_Phone**, but any emulator works. A physical phone with USB debugging also works; accept your computer's authorization on the phone.
 
 To list AVDs and start the tutorial's emulator:
 ```bash
@@ -1302,9 +1302,9 @@ The following messages help recognize problems; **they are not invented new outp
 | `Error: No pubspec.yaml file found.` | You are outside the Flutter root. Enter the folder containing `pubspec.yaml` and repeat the command. |
 | `Your project's Gradle version (8.12.0) is lower than Flutter's minimum supported version of 8.14.0` | Project created with older Flutter. Compare with a fresh template from the same SDK and update Gradle/AGP compatibly. Regenerating `android/` requires preserving permissions, signing, icons and customizations. This repo already uses 9.3.1. |
 | `What went wrong: 25.0.3` | Older Gradle with Java 25 from Android Studio 2026. Update compatible Gradle/plugins or, for that old project, point `flutter config --jdk-dir` at an installed JDK 21. **That setting is global**; unnecessary for this repo and not applied here. |
-| `Your project path contains non-ASCII characters` / `ShaderCompilerException … Could not write file` | Accented Windows path, such as `OneDrive\Imágenes`. Move or clone into an accent-free path such as `C:\dev\HolaMundoFlutter`. This is why this copy lives under `...\Escritorio\FlutterProjects`. |
+| `Your project path contains non-ASCII characters` / `ShaderCompilerException … Could not write file` | Accented Windows path, such as `OneDrive\Imágenes`. Move or clone into an accent-free path such as `C:\dev\HolaMundoFlutter`. |
 | **Restricted Mode** banner in VS Code | Folder is untrusted. If you recognize its source, choose **Manage → Trust**. |
-| `Requested internal only, but not enough space` | Emulator storage is full. Use a new AVD or **Wipe Data** (erases its data). On this computer use HolaMundo_Phone and preserve the user's emulator. |
+| `Requested internal only, but not enough space` | Emulator storage is full. Use a new AVD or **Wipe Data** (erases its data). |
 | `Android license status unknown` | Install missing Command-line Tools and run `flutter doctor --android-licenses`; read and accept licenses. |
 | `No supported devices connected` / `No devices found` | Start an AVD or connect/authorize the phone; check `flutter devices`. |
 | Tests fail after replacing main.dart | The template counter test is still active. Replace it with the actual files from 1.12; update expectations if you personalized text. |

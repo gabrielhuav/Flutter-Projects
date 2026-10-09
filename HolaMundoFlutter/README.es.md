@@ -15,7 +15,7 @@ Este es un **tutorial paso a paso para principiantes**, desde una carpeta vacía
 
 Las dos plataformas usan `lib/main.dart`; el saludo consulta `nombrePlataforma()`. **Android está verificado en Windows; iOS está verificado en el simulador iPhone 17 Pro (iOS 26.5), el 2026-10-08. El iPhone físico sigue pendiente.** Las imágenes genéricas de ajustes de iPhone más adelante no prueban que esta app haya corrido en iOS.
 
-**¿Empiezas en una Mac sin VS Code ni Flutter?** Sigue [la guía de inicio en Mac](INICIO-MAC.md); esta app vive dentro del repositorio `Flutter-Projects`.
+**¿Empiezas sin VS Code ni Flutter?** Sigue [la guía de inicio en Windows](INICIO-WINDOWS.md) o [la de Mac](INICIO-MAC.md); esta app vive dentro del repositorio `Flutter-Projects`.
 
 ---
 
@@ -659,10 +659,10 @@ Si aparece **Trust Project**, decide si confías en el código antes de abrirlo.
 1. En Android Studio abre **Tools → Device Manager**; desde la pantalla inicial puede estar en **More Actions → Virtual Device Manager**.
 2. Pulsa **+ → Create Virtual Device** y elige un perfil de teléfono, por ejemplo Pixel.
 3. Elige una imagen reciente de Android. En Windows Intel/AMD usa **x86_64**; en Mac con chip Apple, **arm64-v8a**. Si falta la imagen, descárgala desde el asistente.
-4. Da al AVD el nombre **HolaMundo_Phone** y pulsa **Finish**. En este equipo ya existe y sus datos viven en `D:\Android\avd`. No necesitas replicar esa ruta en otro equipo.
+4. Da al AVD el nombre **HolaMundo_Phone** y pulsa **Finish**.
 5. Pulsa ▶ junto a ese AVD. Espera a que Android muestre la pantalla de inicio antes de instalar.
 
-Este tutorial usa **exclusivamente HolaMundo_Phone**. No selecciones `Medium_Phone` en este equipo: pertenece al usuario y está lleno. No es necesario borrar otros emuladores para desarrollar esta app. Un teléfono físico con Depuración USB también sirve; acepta la autorización de tu computadora en el teléfono.
+Las capturas de este tutorial usan **HolaMundo_Phone**, pero sirve cualquier emulador. Un teléfono físico con Depuración USB también sirve; acepta la autorización de tu computadora en el teléfono.
 
 Para listar los AVD y arrancar el del tutorial:
 ```bash
@@ -1300,9 +1300,9 @@ Los mensajes siguientes sirven para reconocer problemas; **no son salidas nuevas
 | `Error: No pubspec.yaml file found.` | Estás fuera de la raíz Flutter. Entra en la carpeta que contiene `pubspec.yaml` y repite el comando. |
 | `Your project's Gradle version (8.12.0) is lower than Flutter's minimum supported version of 8.14.0` | Proyecto creado con Flutter antiguo. Compara con una plantilla nueva del mismo SDK y actualiza Gradle/AGP de manera compatible. Regenerar `android/` exige preservar permisos, firma, íconos y personalizaciones. Este repo ya usa 9.3.1. |
 | `What went wrong: 25.0.3` | Gradle antiguo con Java 25 de Android Studio 2026. Actualiza Gradle y plugins compatibles o, en ese proyecto antiguo, indica un JDK 21 instalado con `flutter config --jdk-dir` y su ruta. **Ese ajuste es global**; no hace falta en este repo y no se aplicó aquí. |
-| `Your project path contains non-ASCII characters` / `ShaderCompilerException … Could not write file` | Ruta con acentos en Windows, por ejemplo `OneDrive\Imágenes`. Mueve o clona en una ruta sin acentos como `C:\dev\HolaMundoFlutter`. Por eso esta copia vive en `...\Escritorio\FlutterProjects`. |
+| `Your project path contains non-ASCII characters` / `ShaderCompilerException … Could not write file` | Ruta con acentos en Windows, por ejemplo `OneDrive\Imágenes`. Mueve o clona en una ruta sin acentos como `C:\dev\HolaMundoFlutter`. |
 | Barra **Restricted Mode** en VS Code | La carpeta no es de confianza. Si reconoces el origen, **Manage → Trust**. |
-| `Requested internal only, but not enough space` | Almacenamiento del emulador lleno. Usa un AVD nuevo o **Wipe Data** (borra sus datos). En este equipo usa HolaMundo_Phone y conserva el emulador del usuario. |
+| `Requested internal only, but not enough space` | Almacenamiento del emulador lleno. Usa un AVD nuevo o **Wipe Data** (borra sus datos). |
 | `Android license status unknown` | Instala Command-line Tools si faltan y ejecuta `flutter doctor --android-licenses`; lee y acepta las licencias. |
 | `No supported devices connected` / `No devices found` | Arranca un AVD o conecta/autoriza el teléfono; confirma con `flutter devices`. |
 | Fallan las pruebas tras sustituir main.dart | Sigue activa la prueba del contador original. Reemplázala por los archivos reales de 1.12 y ajusta expectativas si personalizaste textos. |
